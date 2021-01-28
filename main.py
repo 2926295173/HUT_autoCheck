@@ -11,8 +11,9 @@ def main():
     # 定义变量
     success, failure = [], []
     # sectets字段录入
-    phone, password, sckey, deviceId, = [], [], [], ['ffffffff-fcdd-0ad5-0000-00000033c587']
+    phone, password = [], []
     # 多人循环录入
+    deviceId='ffffffff-fcdd-0ad5-0000-00000033c587'
     while True:
         try:
             users = input()
@@ -20,7 +21,7 @@ def main():
             phone.append(info[0])
             password.append(info[1])
             #deviceId.append(info[3])
-            sckey.append(info[2])
+            
         except:
             break
 
@@ -30,7 +31,7 @@ def main():
         count = 0
         while (count <= 3):
             try:
-                token = campus.campus_start(phone[index], password[index], deviceId[0])
+                token = campus.campus_start(phone[index], password[index], deviceId)
                 userInfo = getUserInfo(token)
                 if mark == 0:
                     response = checkIn(userInfo, token)
@@ -69,11 +70,7 @@ def main():
         print("-----------------------")
     fail = sorted(set(failure), key=failure.index)
     title = "成功: %s 人,失败: %s 人" % (len(success), len(fail))
-    try:
-        print('主用户开始微信推送...')
-        wechatPush(title, sckey[0], success, fail, result)
-    except:
-        print("微信推送出错！")
+   
     try:
         print('开始qq推送')
         qqpush(success, fail)
@@ -271,40 +268,7 @@ def check(ownphone, userInfo, token):
     return res
 
 
-# 微信通知
-def wechatPush(title, sckey, success, fail, result):
-    strTime = getNowTime()
-    page = json.dumps(result.json(), sort_keys=True, indent=4, separators=(',', ': '), ensure_ascii=False)
-    content = f"""
-`{strTime}` 
-#### 打卡成功用户：
-`{success}` 
-#### 打卡失败用户:
-`{fail}`
-#### 主用户打卡信息:
-```
-{page}
-```
-### 收藏此项目
-
-        """
-    data = {
-        "text": title,
-        "desp": content
-    }
-    scurl = 'https://sc.ftqq.com/' + sckey + '.send'
-    for _ in range(3):
-        try:
-            req = requests.post(scurl, data=data)
-            if req.json()["errmsg"] == 'success':
-                print("Server酱推送服务成功")
-                break
-            else:
-                print("Server酱推送服务失败")
-                time.sleep(3)
-        except:
-            print("微信推送参数错误")
-
+# QQ通知
 
 def qqpush(success, fail):
     data = {
