@@ -19,7 +19,7 @@ def main():
             info = users.split(',')
             phone.append(info[0])
             password.append(info[1])
-            deviceId.append(info[3])
+            #deviceId.append(info[3])
             sckey.append(info[2])
         except:
             break
@@ -30,7 +30,7 @@ def main():
         count = 0
         while (count <= 3):
             try:
-                token = campus.campus_start(phone[index], password[index], deviceId[index])
+                token = campus.campus_start(phone[index], password[index], deviceId[0])
                 userInfo = getUserInfo(token)
                 if mark == 0:
                     response = checkIn(userInfo, token)
@@ -317,7 +317,6 @@ def qqpush(success, fail):
     qq_url = 'http://api.qqpusher.yanxianjun.com/send_group_msg'
     try:
         req = requests.post(qq_url, data)
-        print(req.json())
         if req.json()['status'] == True:
             print("QQ推送成功")
         else:
