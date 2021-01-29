@@ -13,14 +13,14 @@ def main():
     # sectets字段录入
     phone, password = [], []
     # 多人循环录入
-    deviceId='ffffffff-fcdd-0ad5-0000-00000033c587'
+    deviceId=['ffffffff-fcdd-0ad5-0000-00000033c587']
     while True:
         try:
             users = input()
             info = users.split(',')
             phone.append(info[0])
             password.append(info[1])
-            #deviceId.append(info[3])
+            deviceId.append(info[3])
             
         except:
             break
@@ -31,7 +31,7 @@ def main():
         count = 0
         while (count <= 3):
             try:
-                token = campus.campus_start(phone[index], password[index], deviceId)
+                token = campus.campus_start(phone[index], password[index], deviceId[0])
                 userInfo = getUserInfo(token)
                 if mark == 0:
                     response = checkIn(userInfo, token)
