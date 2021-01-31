@@ -20,7 +20,7 @@ def main():
             info = users.split(',')
             phone.append(info[0])
             password.append(info[1])
-            deviceId.append(info[3])
+           # deviceId.append(info[3])
             
         except:
             break
